@@ -93,6 +93,44 @@ public class MediaManager {
 
     }
 
+    /**
+     * Sorts the shows from the highest rating to lowest. If a show has the
+     * same rating, it will be sorted alphabetically.
+     */
+    public void sortByRating() {
+        //TODO
+    }
+    /**
+     * Sorts the shows in alphabetical order.
+     */
+    public void sortByAlphabeticalOrder() {
+        //TODO
+    }
+    /**
+     * Sorts the shows in reverse alphabetical order.
+     */
+    public void sortByReverseAlphabeticalOrder() {
+        //TODO
+    }
+    /**
+     * Sorts the show from the most recently released to the oldest.
+     */
+    public void sortByReleaseYear() {
+        //TODO
+    }
+    /**
+     * Sorts the shows by whether the user have completed them or not.
+     * The uncompleted shows will be on the top and the completed shows
+     * will be on the bottom, as that will show the user what they still
+     * need to watch on their list. The completed show will be sorted
+     * from A-Z and so will the uncompleted shows.
+     */
+    public void sortByCompletion() {
+        //TODO
+    }
+
+
+
     public void saveToFile() {
         //TODO
     }
@@ -120,10 +158,10 @@ public class MediaManager {
                 genres.add(Genre.GEOGRAPHY);
             } else if (d.equalsIgnoreCase("HISTORICAL")) {
                 genres.add(Genre.HISTORICAL);
-            } else if (d.equalsIgnoreCase("ISEKAI")) {
-                genres.add(Genre.ISEKAI);
             } else if (d.equalsIgnoreCase("HORROR")) {
                 genres.add(Genre.HORROR);
+            } else if (d.equalsIgnoreCase("ISEKAI")) {
+                genres.add(Genre.ISEKAI);
             } else if (d.equalsIgnoreCase("MYSTERY")) {
                 genres.add(Genre.MYSTERY);
             } else if (d.equalsIgnoreCase("ROMANCE")) {
