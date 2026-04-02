@@ -2,6 +2,7 @@ package org.compsci.ia;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -132,7 +133,15 @@ public class MediaManager {
 
 
     public void saveToFile() {
-        //TODO
+        ArrayList<Media> medias = getAllMedia();
+        File data = new File("mediaTrackerData.txt");
+        try (PrintWriter out = new PrintWriter(data)) {
+            for (Media media : medias) {
+                out.println(media.toString());
+            }
+        } catch (FileNotFoundException e) {
+            System.exit(0);
+        }
     }
 
     private ArrayList<Genre> genres(String[] data) {

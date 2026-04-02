@@ -60,4 +60,21 @@ public class Media {
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("|");
+        sb.append(this.title).append("|");
+        sb.append(this.releaseYear).append("|");
+        sb.append(this.rating).append("|");
+        ArrayList<Genre> genre = this.genre;
+        for (Genre g : genre) {
+            sb.append(g).append(",");
+        }
+        sb.append("|");
+        sb.append(this.notes).append("|");
+        sb.append(this.completed).append("|");
+        return sb.toString();
+    }
 }

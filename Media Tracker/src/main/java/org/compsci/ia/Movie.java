@@ -9,4 +9,13 @@ public class Movie extends Media {
     public void setDurationMinutes(int durationMinutes) {
         this.durationMinutes = durationMinutes;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Movie");
+        sb.append(super.toString());
+        sb.append(durationMinutes);
+        return sb.toString();
+    }
 }

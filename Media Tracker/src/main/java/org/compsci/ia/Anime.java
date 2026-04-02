@@ -19,4 +19,14 @@ public class Anime extends EpisodicMedia {
     public void setSubbed(boolean subbed) {
         this.subbed = subbed;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Anime");
+        sb.append(super.toString());
+        sb.append(subbed).append("|");
+        sb.append(dubbed);
+        return sb.toString();
+    }
 }

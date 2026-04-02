@@ -19,4 +19,13 @@ public class EpisodicMedia extends Media{
     public void setEpisodeProgress(int episodeProgress) {
         this.episodeProgress = episodeProgress;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString());
+        sb.append(totalEpisodes).append("|");
+        sb.append(episodeProgress).append("|");
+        return sb.toString();
+    }
 }
