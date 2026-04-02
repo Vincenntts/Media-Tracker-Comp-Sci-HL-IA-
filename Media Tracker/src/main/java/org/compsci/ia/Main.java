@@ -81,8 +81,11 @@ public class Main {
             JLabel releaseYear = new JLabel("Release Year: " + String.valueOf(media.getReleaseYear()));
             releaseYear.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+            JPanel genreTextPanel = new JPanel();
             JLabel genre = new JLabel("Genres: " + media.getGenre());
-            genre.setAlignmentX(Component.CENTER_ALIGNMENT);
+            genreTextPanel.add(genre);
+            JScrollPane genreTextScroller = new JScrollPane(genreTextPanel);
+            genreTextScroller.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             JLabel rating = new JLabel("Rating: " + String.valueOf(media.getRating()));
             rating.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -100,23 +103,284 @@ public class Main {
             scrollNotes.setPreferredSize(new Dimension(180, 60));
 
             JPanel buttonPanel = new JPanel();
-            JButton edit = new JButton("Edit");
-            edit.setForeground(darkAzure);
-            edit.setBackground(Color.white);
-            edit.setFocusPainted(false);
-            JButton delete = new JButton("Delete");
-            delete.setForeground(darkAzure);
-            delete.setBackground(Color.white);
-            delete.setFocusPainted(false);
-            buttonPanel.add(edit);
-            buttonPanel.add(delete);
-            //TODO make the edit and delete buttons do something
+            JButton editButton = new JButton("Edit");
+            editButton.setForeground(darkAzure);
+            editButton.setBackground(Color.white);
+            editButton.setFocusPainted(false);
+            JButton deleteButton = new JButton("Delete");
+            deleteButton.setForeground(darkAzure);
+            deleteButton.setBackground(Color.white);
+            deleteButton.setFocusPainted(false);
+            buttonPanel.add(editButton);
+            buttonPanel.add(deleteButton);
+
+
+            editButton.addActionListener(e -> {
+                JFrame editFrame = new JFrame("Edit Media");
+                editFrame.setSize(600, 600);
+                JPanel editPanel = new JPanel(new GridLayout(0, 2, 5, 5));
+
+                JRadioButton animeButton = new JRadioButton("Anime");
+                JRadioButton cartoonButton = new JRadioButton("Cartoon");
+                JRadioButton movieButton = new JRadioButton("Movie");
+                JRadioButton showButton = new JRadioButton("Show");
+
+                ButtonGroup mediaGroup = new ButtonGroup();
+                mediaGroup.add(animeButton);
+                mediaGroup.add(cartoonButton);
+                mediaGroup.add(movieButton);
+                mediaGroup.add(showButton);
+                JPanel mediaTypePanel = new JPanel();
+                mediaTypePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+                mediaTypePanel.add(animeButton);
+                mediaTypePanel.add(cartoonButton);
+                mediaTypePanel.add(movieButton);
+                mediaTypePanel.add(showButton);
+                editPanel.add(new JLabel("Media Type (Required):"));
+                editPanel.add(mediaTypePanel);
+
+                if (media instanceof Anime) {
+                    animeButton.setSelected(true);
+                } else if (media instanceof Cartoon) {
+                    cartoonButton.setSelected(true);
+                } else if (media instanceof Movie) {
+                    movieButton.setSelected(true);
+                } else if (media instanceof Show) {
+                    showButton.setSelected(true);
+                }
+
+                JTextField titleField = new JTextField(media.getTitle());
+                JTextField yearField = new JTextField(String.valueOf(media.getReleaseYear()));
+                JPanel genrePanel = new JPanel(new GridLayout(0, 2, 5, 5));
+                Map<Genre, JCheckBox> genreMap = new HashMap<>();
+                for (Genre g : Genre.values()) {
+                    JCheckBox checkBox = new JCheckBox(g.toString());
+                    genrePanel.add(checkBox);
+                    genreMap.put(g, checkBox);
+                }
+
+                ArrayList<Genre> alreadySelectedGenreList = media.getGenre();
+                for (Genre alreadySelected : alreadySelectedGenreList) {
+                    if (genreMap.containsKey(alreadySelected)) {
+                        JCheckBox checkBox = genreMap.get(alreadySelected);
+                        checkBox.setSelected(true);
+                    }
+                }
+
+                JScrollPane genreScroller = new JScrollPane(genrePanel);
+                genreScroller.getVerticalScrollBar().setUnitIncrement(2);
+                JTextField ratingField = new JTextField(String.valueOf(media.getRating()));
+                JTextField notesField = new JTextField(media.getNotes());
+                JCheckBox completedBox = new JCheckBox("Completed");
+                if (media.isCompleted()) {
+                    completedBox.setSelected(true);
+                }
+                JTextField totalEpisodeField = new JTextField();
+                JTextField episodeProgressField = new JTextField();
+                if (media instanceof EpisodicMedia) {
+                    totalEpisodeField.setText(String.valueOf(((EpisodicMedia) media).getTotalEpisodes()));
+                    episodeProgressField.setText(String.valueOf(((EpisodicMedia) media).getEpisodeProgress()));
+                }
+                JCheckBox dubbedBox = new JCheckBox("Dubbed");
+                if (media instanceof Anime && ((Anime) media).isDubbed()) {
+                    dubbedBox.setSelected(true);
+                }
+                JCheckBox subbedBox = new JCheckBox("Subbed");
+                if (media instanceof Anime && ((Anime) media).isSubbed()) {
+                    subbedBox.setSelected(true);
+                }
+                JTextField ageRatingField = new JTextField();
+                if (media instanceof Cartoon) {
+                    ageRatingField.setText(String.valueOf(((Cartoon) media).getAgeRating()));
+                }
+                JTextField seasonField = new JTextField();
+                if (media instanceof Show) {
+                    seasonField.setText(String.valueOf(((Show) media).getSeasons()));
+                }
+                JTextField durationField = new JTextField();
+                if (media instanceof Movie) {
+                    durationField.setText(String.valueOf(((Movie) media).getDurationMinutes()));
+                }
+
+                editPanel.add(new JLabel("Title (Required):"));
+                editPanel.add(titleField);
+                editPanel.add(new JLabel("Release Year (Optional):"));
+                editPanel.add(yearField);
+                editPanel.add(new JLabel("Genre (Optional):"));
+                editPanel.add(genreScroller);
+                editPanel.add(new JLabel("Rating (Optional):"));
+                editPanel.add(ratingField);
+                editPanel.add(new JLabel("Notes (Optional):"));
+                editPanel.add(notesField);
+                editPanel.add(new JLabel("Completed:"));
+                editPanel.add(completedBox);
+
+                editPanel.add(new JLabel("For Anime/Cartoon/Show Only:"));
+                editPanel.add(new JLabel(""));
+                editPanel.add(new JLabel("Total Episodes (Optional):"));
+                editPanel.add(totalEpisodeField);
+                editPanel.add(new JLabel("Episode Progress (Optional):"));
+                editPanel.add(episodeProgressField);
+                editPanel.add(new JLabel("For Anime Only:"));
+                editPanel.add(new JLabel(""));
+                editPanel.add(new JLabel("Dubbed:"));
+                editPanel.add(dubbedBox);
+                editPanel.add(new JLabel("Subbed:"));
+                editPanel.add(subbedBox);
+                editPanel.add(new JLabel("For Cartoon Only:"));
+                editPanel.add(new JLabel(""));
+                editPanel.add(new JLabel("Age Rating (Optional):"));
+                editPanel.add(ageRatingField);
+                editPanel.add(new JLabel("For Movie Only:"));
+                editPanel.add(new JLabel(""));
+                editPanel.add(new JLabel("Duration in Minutes (Optional):"));
+                editPanel.add(durationField);
+                editPanel.add(new JLabel("For Show Only:"));
+                editPanel.add(new JLabel(""));
+                editPanel.add(new JLabel("Seasons (Optional):"));
+                editPanel.add(seasonField);
+                JButton saveButton = new JButton("Save");
+                editPanel.add(saveButton);
+
+                mediaTypePanel.setPreferredSize(new Dimension(200, 60));
+                titleField.setPreferredSize(new Dimension(200, 60));
+                yearField.setPreferredSize(new Dimension(200, 60));
+                genreScroller.setPreferredSize(new Dimension(200, 60));
+                ratingField.setPreferredSize(new Dimension(200, 60));
+                notesField.setPreferredSize(new Dimension(200, 60));
+                totalEpisodeField.setPreferredSize(new Dimension(200, 60));
+                episodeProgressField.setPreferredSize(new Dimension(200, 60));
+                ageRatingField.setPreferredSize(new Dimension(200, 60));
+                durationField.setPreferredSize(new Dimension(200, 60));
+                seasonField.setPreferredSize(new Dimension(200, 60));
+
+                JScrollPane editScrollPane = new JScrollPane(editPanel);
+                editScrollPane.getVerticalScrollBar().setUnitIncrement(20);
+                editFrame.add(editScrollPane);
+
+                saveButton.addActionListener(ev -> {
+                    try {
+                        Media m;
+                        if (animeButton.isSelected()) {
+                            m = new Anime();
+                        } else if (movieButton.isSelected()) {
+                            m = new Movie();
+                        } else if (showButton.isSelected()) {
+                            m = new Show();
+                        } else if (cartoonButton.isSelected()) {
+                            m = new Cartoon();
+                        } else {
+                            throw new IllegalArgumentException("Selection required for media type");
+                        }
+                        if (!titleField.getText().trim().isEmpty()) {
+                            String t = titleField.getText();
+                            m.setTitle(t);
+                        } else {
+                            throw new IllegalArgumentException("Title is required!");
+                        }
+                        if (!yearField.getText().trim().isEmpty()) {
+                            int year = Integer.parseInt(yearField.getText());
+                            m.setReleaseYear(year);
+                        }
+                        if (!ratingField.getText().trim().isEmpty()) {
+                            int r = Integer.parseInt(ratingField.getText());
+                            m.setRating(r);
+                        }
+                        ArrayList<Genre> genreList = new ArrayList<>();
+                        for (Map.Entry<Genre, JCheckBox> entry : genreMap.entrySet()) {
+                            if (entry.getValue().isSelected()) {
+                                genreList.add(entry.getKey());
+                            }
+                        }
+                        m.setGenre(genreList);
+                        if (!notesField.getText().trim().isEmpty()) {
+                            String n = notesField.getText();
+                            m.setNotes(n);
+                        }
+                        boolean completed = completedBox.isSelected();
+                        m.setCompleted(completed);
+                        if (!totalEpisodeField.getText().trim().isEmpty() && m instanceof EpisodicMedia) {
+                            int totalEpisodes = Integer.parseInt(totalEpisodeField.getText());
+                            ((EpisodicMedia) m).setTotalEpisodes(totalEpisodes);
+                        }
+                        if (!episodeProgressField.getText().trim().isEmpty() && m instanceof EpisodicMedia) {
+                            int episodeProgress = Integer.parseInt(episodeProgressField.getText());
+                            ((EpisodicMedia) m).setEpisodeProgress(episodeProgress);
+                        }
+                        if (m instanceof Anime) {
+                            boolean subbed = subbedBox.isSelected();
+                            boolean dubbed = dubbedBox.isSelected();
+                            ((Anime) m).setSubbed(subbed);
+                            ((Anime) m).setDubbed(dubbed);
+                        }
+                        if (m instanceof Cartoon) {
+                            if (!ageRatingField.getText().trim().isEmpty()) {
+                                String ageRating = ageRatingField.getText();
+                                ((Cartoon) m).setAgeRating(ageRating);
+                            }
+                        }
+                        if (m instanceof Movie) {
+                            if (!durationField.getText().trim().isEmpty()) {
+                                int duration = Integer.parseInt(durationField.getText());
+                                ((Movie) m).setDurationMinutes(duration);
+                            }
+                        }
+                        if (m instanceof Show) {
+                            if (!seasonField.getText().trim().isEmpty()) {
+                                int season = Integer.parseInt(seasonField.getText());
+                                ((Show) m).setSeasons(season);
+                            }
+                        }
+                        manager.removeMedia(media);
+                        manager.addMedia(m);
+                        manager.saveToFile("mediaTrackerData.txt");
+                        editFrame.dispose();
+
+                        refresh(mediasPanel, medias, manager, darkAzure, frame);
+
+                        JDialog successDialog = new JDialog(frame, "Success!", true);
+                        successDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                        successDialog.setSize(200, 100);
+                        successDialog.add(new JLabel("Successfully edited media!"));
+                        successDialog.setVisible(true);
+                    } catch (Exception exception) {
+                        editFrame.dispose();
+
+                        JDialog successDialog = new JDialog(frame, "Error!", true);
+                        successDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                        successDialog.setSize(450, 100);
+                        successDialog.add(new JLabel("Something went wrong! Please check your inputs! No changes were made."));
+                        successDialog.setVisible(true);
+                    }
+
+                });
+
+                editFrame.setVisible(true);
+
+            });
+
+            deleteButton.addActionListener(e -> {
+                int result = JOptionPane.showConfirmDialog(
+                        frame,
+                        "Are you sure you want to delete this media?",
+                        "Confirm Deletion",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (result == JOptionPane.YES_OPTION) {
+                    manager.removeMedia(media);
+                    refresh(mediasPanel, medias, manager, darkAzure, frame);
+                    JOptionPane.showMessageDialog(frame, "Successfully removed media!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No media was removed.", "Cancelled", JOptionPane.INFORMATION_MESSAGE);
+                }
+            });
 
             mediaPanel.add(title);
             mediaPanel.add(Box.createVerticalStrut(5));
             mediaPanel.add(releaseYear);
             mediaPanel.add(Box.createVerticalStrut(5));
-            mediaPanel.add(genre);
+            mediaPanel.add(genreTextScroller);
             mediaPanel.add(Box.createVerticalStrut(5));
             mediaPanel.add(rating);
             mediaPanel.add(Box.createVerticalStrut(5));
@@ -181,6 +445,7 @@ public class Main {
         plusButton.addActionListener(e -> {
             JFrame addFrame = new JFrame("Add New Media");
             addFrame.setSize(600, 600);
+            addFrame.setResizable(false);
             JPanel addPanel = new JPanel(new GridLayout(20, 2, 5, 5));
 
             JRadioButton animeButton = new JRadioButton("Anime");
@@ -265,16 +530,16 @@ public class Main {
 
             addPanel.add(saveButton);
 
-            titleField.setPreferredSize(new Dimension(200, 25));
-            yearField.setPreferredSize(new Dimension(200, 25));
-            genreScroller.setPreferredSize(new Dimension(200, 100));
-            ratingField.setPreferredSize(new Dimension(200, 25));
-            notesField.setPreferredSize(new Dimension(200, 25));
-            totalEpisodeField.setPreferredSize(new Dimension(200, 25));
-            episodeProgressField.setPreferredSize(new Dimension(200, 25));
-            ageRatingField.setPreferredSize(new Dimension(200, 25));
-            durationField.setPreferredSize(new Dimension(200, 25));
-            seasonField.setPreferredSize(new Dimension(200, 25));
+            titleField.setPreferredSize(new Dimension(200, 60));
+            yearField.setPreferredSize(new Dimension(200, 60));
+            genreScroller.setPreferredSize(new Dimension(200, 60));
+            ratingField.setPreferredSize(new Dimension(200, 60));
+            notesField.setPreferredSize(new Dimension(200, 60));
+            totalEpisodeField.setPreferredSize(new Dimension(200, 60));
+            episodeProgressField.setPreferredSize(new Dimension(200, 60));
+            ageRatingField.setPreferredSize(new Dimension(200, 60));
+            durationField.setPreferredSize(new Dimension(200, 60));
+            seasonField.setPreferredSize(new Dimension(200, 60));
 
             JScrollPane addScrollPane = new JScrollPane(addPanel);
             addScrollPane.getVerticalScrollBar().setUnitIncrement(20);
@@ -357,20 +622,20 @@ public class Main {
                     manager.saveToFile("mediaTrackerData.txt");
                     addFrame.dispose();
 
-                    refresh(mediasPanel, medias, darkAzure);
+                    refresh(mediasPanel, medias, manager, darkAzure, frame);
 
                     JDialog successDialog = new JDialog(frame, "Success!", true);
                     successDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                     successDialog.setSize(200, 100);
-                    successDialog.add(new JLabel("Sucessfully added media!"));
+                    successDialog.add(new JLabel("Successfully added media!"));
                     successDialog.setVisible(true);
                 } catch (Exception exception) {
                     addFrame.dispose();
 
                     JDialog successDialog = new JDialog(frame, "Error!", true);
                     successDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                    successDialog.setSize(350, 100);
-                    successDialog.add(new JLabel("Something went wrong! Please check your inputs!"));
+                    successDialog.setSize(450, 100);
+                    successDialog.add(new JLabel("Something went wrong! Please check your inputs! Nothing was added."));
                     successDialog.setVisible(true);
                 }
 
@@ -388,34 +653,37 @@ public class Main {
                     if (media.getTitle().toLowerCase().contains(searchText.toLowerCase())) {
                         filteredList.add(media);
                     }
+
                 }
-                refresh(mediasPanel, filteredList, darkAzure);
+                refresh(mediasPanel, filteredList, manager, darkAzure, frame);
             } else {
-                refresh(mediasPanel, manager.getAllMedia(), darkAzure);
+                refresh(mediasPanel, manager.getAllMedia(), manager, darkAzure, frame);
             }
         });
 
         sortingMenu.addActionListener(e -> {
             if (sortingMenu.getSelectedIndex() == 0) {
                 manager.sortByAlphabeticalOrder();
-                refresh(mediasPanel, manager.getAllMedia(), darkAzure);
+                refresh(mediasPanel, manager.getAllMedia(), manager, darkAzure, frame);
             } else if (sortingMenu.getSelectedIndex() == 1) {
                 manager.sortByReverseAlphabeticalOrder();
-                refresh(mediasPanel, manager.getAllMedia(), darkAzure);
+                refresh(mediasPanel, manager.getAllMedia(), manager, darkAzure, frame);
             } else if (sortingMenu.getSelectedIndex() == 2) {
                 manager.sortByRating();
-                refresh(mediasPanel, manager.getAllMedia(), darkAzure);
+                refresh(mediasPanel, manager.getAllMedia(), manager, darkAzure, frame);
             } else if (sortingMenu.getSelectedIndex() == 3) {
                 manager.sortByReleaseYear();
-                refresh(mediasPanel, manager.getAllMedia(), darkAzure);
+                refresh(mediasPanel, manager.getAllMedia(), manager, darkAzure, frame);
             } else if (sortingMenu.getSelectedIndex() == 4) {
                 manager.sortByCompletion();
-                refresh(mediasPanel, manager.getAllMedia(), darkAzure);
+                refresh(mediasPanel, manager.getAllMedia(), manager, darkAzure, frame);
             }
         });
 
+
+
     }
-    public static void refresh(JPanel mediasPanel, ArrayList<Media> medias, Color darkAzure) {
+    public static void refresh(JPanel mediasPanel, ArrayList<Media> medias, MediaManager manager, Color darkAzure, JFrame frame) {
         mediasPanel.removeAll();
         for (Media media : medias) {
             JPanel mediaPanel = new JPanel();
@@ -430,8 +698,11 @@ public class Main {
             JLabel releaseYear = new JLabel("Release Year: " + String.valueOf(media.getReleaseYear()));
             releaseYear.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+            JPanel genreTextPanel = new JPanel();
             JLabel genre = new JLabel("Genres: " + media.getGenre());
-            genre.setAlignmentX(Component.CENTER_ALIGNMENT);
+            genreTextPanel.add(genre);
+            JScrollPane genreTextScroller = new JScrollPane(genreTextPanel);
+            genreTextScroller.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             JLabel rating = new JLabel("Rating: " + String.valueOf(media.getRating()));
             rating.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -449,23 +720,283 @@ public class Main {
             scrollNotes.setPreferredSize(new Dimension(180, 60));
 
             JPanel buttonPanel = new JPanel();
-            JButton edit = new JButton("Edit");
-            edit.setForeground(darkAzure);
-            edit.setBackground(Color.white);
-            edit.setFocusPainted(false);
-            JButton delete = new JButton("Delete");
-            delete.setForeground(darkAzure);
-            delete.setBackground(Color.white);
-            delete.setFocusPainted(false);
-            buttonPanel.add(edit);
-            buttonPanel.add(delete);
-            //TODO make the edit and delete buttons do something
+            JButton editButton = new JButton("Edit");
+            editButton.setForeground(darkAzure);
+            editButton.setBackground(Color.white);
+            editButton.setFocusPainted(false);
+            JButton deleteButton = new JButton("Delete");
+            deleteButton.setForeground(darkAzure);
+            deleteButton.setBackground(Color.white);
+            deleteButton.setFocusPainted(false);
+            buttonPanel.add(editButton);
+            buttonPanel.add(deleteButton);
+
+            editButton.addActionListener(e -> {
+                JFrame editFrame = new JFrame("Edit Media");
+                editFrame.setSize(600, 600);
+                JPanel editPanel = new JPanel(new GridLayout(0, 2, 5, 5));
+
+                JRadioButton animeButton = new JRadioButton("Anime");
+                JRadioButton cartoonButton = new JRadioButton("Cartoon");
+                JRadioButton movieButton = new JRadioButton("Movie");
+                JRadioButton showButton = new JRadioButton("Show");
+
+                ButtonGroup mediaGroup = new ButtonGroup();
+                mediaGroup.add(animeButton);
+                mediaGroup.add(cartoonButton);
+                mediaGroup.add(movieButton);
+                mediaGroup.add(showButton);
+                JPanel mediaTypePanel = new JPanel();
+                mediaTypePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+                mediaTypePanel.add(animeButton);
+                mediaTypePanel.add(cartoonButton);
+                mediaTypePanel.add(movieButton);
+                mediaTypePanel.add(showButton);
+                editPanel.add(new JLabel("Media Type (Required):"));
+                editPanel.add(mediaTypePanel);
+
+                if (media instanceof Anime) {
+                    animeButton.setSelected(true);
+                } else if (media instanceof Cartoon) {
+                    cartoonButton.setSelected(true);
+                } else if (media instanceof Movie) {
+                    movieButton.setSelected(true);
+                } else if (media instanceof Show) {
+                    showButton.setSelected(true);
+                }
+
+                JTextField titleField = new JTextField(media.getTitle());
+                JTextField yearField = new JTextField(String.valueOf(media.getReleaseYear()));
+                JPanel genrePanel = new JPanel(new GridLayout(0, 2, 5, 5));
+                Map<Genre, JCheckBox> genreMap = new HashMap<>();
+                for (Genre g : Genre.values()) {
+                    JCheckBox checkBox = new JCheckBox(g.toString());
+                    genrePanel.add(checkBox);
+                    genreMap.put(g, checkBox);
+                }
+
+                ArrayList<Genre> alreadySelectedGenreList = media.getGenre();
+                for (Genre alreadySelected : alreadySelectedGenreList) {
+                    if (genreMap.containsKey(alreadySelected)) {
+                        JCheckBox checkBox = genreMap.get(alreadySelected);
+                        checkBox.setSelected(true);
+                    }
+                }
+
+                JScrollPane genreScroller = new JScrollPane(genrePanel);
+                genreScroller.getVerticalScrollBar().setUnitIncrement(2);
+                JTextField ratingField = new JTextField(String.valueOf(media.getRating()));
+                JTextField notesField = new JTextField(media.getNotes());
+                JCheckBox completedBox = new JCheckBox("Completed");
+                if (media.isCompleted()) {
+                    completedBox.setSelected(true);
+                }
+                JTextField totalEpisodeField = new JTextField();
+                JTextField episodeProgressField = new JTextField();
+                if (media instanceof EpisodicMedia) {
+                    totalEpisodeField.setText(String.valueOf(((EpisodicMedia) media).getTotalEpisodes()));
+                    episodeProgressField.setText(String.valueOf(((EpisodicMedia) media).getEpisodeProgress()));
+                }
+                JCheckBox dubbedBox = new JCheckBox("Dubbed");
+                if (media instanceof Anime && ((Anime) media).isDubbed()) {
+                    dubbedBox.setSelected(true);
+                }
+                JCheckBox subbedBox = new JCheckBox("Subbed");
+                if (media instanceof Anime && ((Anime) media).isSubbed()) {
+                    subbedBox.setSelected(true);
+                }
+                JTextField ageRatingField = new JTextField();
+                if (media instanceof Cartoon) {
+                    ageRatingField.setText(String.valueOf(((Cartoon) media).getAgeRating()));
+                }
+                JTextField seasonField = new JTextField();
+                if (media instanceof Show) {
+                    seasonField.setText(String.valueOf(((Show) media).getSeasons()));
+                }
+                JTextField durationField = new JTextField();
+                if (media instanceof Movie) {
+                    durationField.setText(String.valueOf(((Movie) media).getDurationMinutes()));
+                }
+
+                editPanel.add(new JLabel("Title (Required):"));
+                editPanel.add(titleField);
+                editPanel.add(new JLabel("Release Year (Optional):"));
+                editPanel.add(yearField);
+                editPanel.add(new JLabel("Genre (Optional):"));
+                editPanel.add(genreScroller);
+                editPanel.add(new JLabel("Rating (Optional):"));
+                editPanel.add(ratingField);
+                editPanel.add(new JLabel("Notes (Optional):"));
+                editPanel.add(notesField);
+                editPanel.add(new JLabel("Completed:"));
+                editPanel.add(completedBox);
+
+                editPanel.add(new JLabel("For Anime/Cartoon/Show Only:"));
+                editPanel.add(new JLabel(""));
+                editPanel.add(new JLabel("Total Episodes (Optional):"));
+                editPanel.add(totalEpisodeField);
+                editPanel.add(new JLabel("Episode Progress (Optional):"));
+                editPanel.add(episodeProgressField);
+                editPanel.add(new JLabel("For Anime Only:"));
+                editPanel.add(new JLabel(""));
+                editPanel.add(new JLabel("Dubbed:"));
+                editPanel.add(dubbedBox);
+                editPanel.add(new JLabel("Subbed:"));
+                editPanel.add(subbedBox);
+                editPanel.add(new JLabel("For Cartoon Only:"));
+                editPanel.add(new JLabel(""));
+                editPanel.add(new JLabel("Age Rating (Optional):"));
+                editPanel.add(ageRatingField);
+                editPanel.add(new JLabel("For Movie Only:"));
+                editPanel.add(new JLabel(""));
+                editPanel.add(new JLabel("Duration in Minutes (Optional):"));
+                editPanel.add(durationField);
+                editPanel.add(new JLabel("For Show Only:"));
+                editPanel.add(new JLabel(""));
+                editPanel.add(new JLabel("Seasons (Optional):"));
+                editPanel.add(seasonField);
+                JButton saveButton = new JButton("Save");
+                editPanel.add(saveButton);
+
+                mediaTypePanel.setPreferredSize(new Dimension(200, 60));
+                titleField.setPreferredSize(new Dimension(200, 60));
+                yearField.setPreferredSize(new Dimension(200, 60));
+                genreScroller.setPreferredSize(new Dimension(200, 60));
+                ratingField.setPreferredSize(new Dimension(200, 60));
+                notesField.setPreferredSize(new Dimension(200, 60));
+                totalEpisodeField.setPreferredSize(new Dimension(200, 60));
+                episodeProgressField.setPreferredSize(new Dimension(200, 60));
+                ageRatingField.setPreferredSize(new Dimension(200, 60));
+                durationField.setPreferredSize(new Dimension(200, 60));
+                seasonField.setPreferredSize(new Dimension(200, 60));
+
+                JScrollPane editScrollPane = new JScrollPane(editPanel);
+                editScrollPane.getVerticalScrollBar().setUnitIncrement(20);
+                editFrame.add(editScrollPane);
+
+                saveButton.addActionListener(ev -> {
+                    try {
+                        Media m;
+                        if (animeButton.isSelected()) {
+                            m = new Anime();
+                        } else if (movieButton.isSelected()) {
+                            m = new Movie();
+                        } else if (showButton.isSelected()) {
+                            m = new Show();
+                        } else if (cartoonButton.isSelected()) {
+                            m = new Cartoon();
+                        } else {
+                            throw new IllegalArgumentException("Selection required for media type");
+                        }
+                        if (!titleField.getText().trim().isEmpty()) {
+                            String t = titleField.getText();
+                            m.setTitle(t);
+                        } else {
+                            throw new IllegalArgumentException("Title is required!");
+                        }
+                        if (!yearField.getText().trim().isEmpty()) {
+                            int year = Integer.parseInt(yearField.getText());
+                            m.setReleaseYear(year);
+                        }
+                        if (!ratingField.getText().trim().isEmpty()) {
+                            int r = Integer.parseInt(ratingField.getText());
+                            m.setRating(r);
+                        }
+                        ArrayList<Genre> genreList = new ArrayList<>();
+                        for (Map.Entry<Genre, JCheckBox> entry : genreMap.entrySet()) {
+                            if (entry.getValue().isSelected()) {
+                                genreList.add(entry.getKey());
+                            }
+                        }
+                        m.setGenre(genreList);
+                        if (!notesField.getText().trim().isEmpty()) {
+                            String n = notesField.getText();
+                            m.setNotes(n);
+                        }
+                        boolean completed = completedBox.isSelected();
+                        m.setCompleted(completed);
+                        if (!totalEpisodeField.getText().trim().isEmpty() && m instanceof EpisodicMedia) {
+                            int totalEpisodes = Integer.parseInt(totalEpisodeField.getText());
+                            ((EpisodicMedia) m).setTotalEpisodes(totalEpisodes);
+                        }
+                        if (!episodeProgressField.getText().trim().isEmpty() && m instanceof EpisodicMedia) {
+                            int episodeProgress = Integer.parseInt(episodeProgressField.getText());
+                            ((EpisodicMedia) m).setEpisodeProgress(episodeProgress);
+                        }
+                        if (m instanceof Anime) {
+                            boolean subbed = subbedBox.isSelected();
+                            boolean dubbed = dubbedBox.isSelected();
+                            ((Anime) m).setSubbed(subbed);
+                            ((Anime) m).setDubbed(dubbed);
+                        }
+                        if (m instanceof Cartoon) {
+                            if (!ageRatingField.getText().trim().isEmpty()) {
+                                String ageRating = ageRatingField.getText();
+                                ((Cartoon) m).setAgeRating(ageRating);
+                            }
+                        }
+                        if (m instanceof Movie) {
+                            if (!durationField.getText().trim().isEmpty()) {
+                                int duration = Integer.parseInt(durationField.getText());
+                                ((Movie) m).setDurationMinutes(duration);
+                            }
+                        }
+                        if (m instanceof Show) {
+                            if (!seasonField.getText().trim().isEmpty()) {
+                                int season = Integer.parseInt(seasonField.getText());
+                                ((Show) m).setSeasons(season);
+                            }
+                        }
+                        manager.removeMedia(media);
+                        manager.addMedia(m);
+                        manager.saveToFile("mediaTrackerData.txt");
+                        editFrame.dispose();
+
+                        refresh(mediasPanel, medias, manager, darkAzure, frame);
+
+                        JDialog successDialog = new JDialog(frame, "Success!", true);
+                        successDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                        successDialog.setSize(200, 100);
+                        successDialog.add(new JLabel("Successfully edited media!"));
+                        successDialog.setVisible(true);
+                    } catch (Exception exception) {
+                        editFrame.dispose();
+
+                        JDialog successDialog = new JDialog(frame, "Error!", true);
+                        successDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                        successDialog.setSize(450, 100);
+                        successDialog.add(new JLabel("Something went wrong! Please check your inputs! No changes were made."));
+                        successDialog.setVisible(true);
+                    }
+
+                });
+
+                editFrame.setVisible(true);
+
+            });
+
+            deleteButton.addActionListener(e -> {
+                int result = JOptionPane.showConfirmDialog(
+                        frame,
+                        "Are you sure you want to delete this media?",
+                        "Confirm Deletion",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (result == JOptionPane.YES_OPTION) {
+                    manager.removeMedia(media);
+                    refresh(mediasPanel, medias, manager, darkAzure, frame);
+                    JOptionPane.showMessageDialog(frame, "Successfully removed media!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "No media was removed.", "Cancelled", JOptionPane.INFORMATION_MESSAGE);
+                }
+            });
 
             mediaPanel.add(title);
             mediaPanel.add(Box.createVerticalStrut(5));
             mediaPanel.add(releaseYear);
             mediaPanel.add(Box.createVerticalStrut(5));
-            mediaPanel.add(genre);
+            mediaPanel.add(genreTextScroller);
             mediaPanel.add(Box.createVerticalStrut(5));
             mediaPanel.add(rating);
             mediaPanel.add(Box.createVerticalStrut(5));

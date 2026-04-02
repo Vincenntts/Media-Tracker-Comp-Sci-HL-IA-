@@ -1,5 +1,5 @@
-Show|Breaking Bad|2008|1|CRIME,THRILLER,DRAMA,WESTERN,||false|62|52|5
-Movie|Rush Hour 2|2001|2|ACTION,COMEDY,|I'm like half way done|false|90
+Anime|Jujutsu Kaisen|2020|9|ACTION,|null|false|59|2|true|true
 Cartoon|Avatar: The Last Airbender|2005|3|ACTION,FANTASY,||true|61|23|TV-Y7-FV
-Anime|Jujutsu Kaisen|2020|9|ACTION,||false|59|24|true|true
-Movie|Kung Fu Panda|0|0||null|false|0
+Movie|Rush Hour 2|2001|2|COMEDY,ACTION,|I'm like half way done.|true|90
+Show|Breaking Bad|2008|1|CRIME,THRILLER,DRAMA,WESTERN,||false|62|52|5
+Movie|Kung Fu Panda|2008|3|ACTION,COMEDY,|Notes because I like it|true|92
