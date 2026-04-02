@@ -62,9 +62,9 @@ public class Main {
                 "Release Year",
                 "Completion"
         });
+
         sortingMenuPanel.add(sortingLabel);
         sortingMenuPanel.add(sortingMenu);
-        //TODO make the sorting menu actually do something
 
         JPanel mediasPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         ArrayList<Media> medias = manager.getAllMedia();
@@ -391,6 +391,25 @@ public class Main {
                 }
                 refresh(mediasPanel, filteredList, darkAzure);
             } else {
+                refresh(mediasPanel, manager.getAllMedia(), darkAzure);
+            }
+        });
+
+        sortingMenu.addActionListener(e -> {
+            if (sortingMenu.getSelectedIndex() == 0) {
+                manager.sortByAlphabeticalOrder();
+                refresh(mediasPanel, manager.getAllMedia(), darkAzure);
+            } else if (sortingMenu.getSelectedIndex() == 1) {
+                manager.sortByReverseAlphabeticalOrder();
+                refresh(mediasPanel, manager.getAllMedia(), darkAzure);
+            } else if (sortingMenu.getSelectedIndex() == 2) {
+                manager.sortByRating();
+                refresh(mediasPanel, manager.getAllMedia(), darkAzure);
+            } else if (sortingMenu.getSelectedIndex() == 3) {
+                manager.sortByReleaseYear();
+                refresh(mediasPanel, manager.getAllMedia(), darkAzure);
+            } else if (sortingMenu.getSelectedIndex() == 4) {
+                manager.sortByCompletion();
                 refresh(mediasPanel, manager.getAllMedia(), darkAzure);
             }
         });

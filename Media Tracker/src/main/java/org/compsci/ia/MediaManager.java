@@ -99,25 +99,65 @@ public class MediaManager {
      * same rating, it will be sorted alphabetically.
      */
     public void sortByRating() {
-        //TODO
+        ArrayList<Media> medias = getAllMedia();
+        for (int i = 1; i < medias.size(); i++) {
+            Media media = medias.get(i);
+            int j = i - 1;
+
+            while (j >= 0 && medias.get(j).getRating() < media.getRating()) {
+                medias.set(j + 1, medias.get(j));
+                j--;
+            }
+            medias.set(j + 1, media);
+        }
     }
     /**
      * Sorts the shows in alphabetical order.
      */
     public void sortByAlphabeticalOrder() {
-        //TODO
+        ArrayList<Media> medias = getAllMedia();
+        for (int i = 1; i < medias.size(); i++) {
+            Media media = medias.get(i);
+            int j = i - 1;
+
+            while (j >= 0 && medias.get(j).getTitle().compareTo(media.getTitle()) > 0) {
+                medias.set(j + 1, medias.get(j));
+                j--;
+            }
+            medias.set(j + 1, media);
+        }
     }
     /**
      * Sorts the shows in reverse alphabetical order.
      */
     public void sortByReverseAlphabeticalOrder() {
-        //TODO
+        ArrayList<Media> medias = getAllMedia();
+        for (int i = 1; i < medias.size(); i++) {
+            Media media = medias.get(i);
+            int j = i - 1;
+
+            while (j >= 0 && medias.get(j).getTitle().compareTo(media.getTitle()) < 0) {
+                medias.set(j + 1, medias.get(j));
+                j--;
+            }
+            medias.set(j + 1, media);
+        }
     }
     /**
      * Sorts the show from the most recently released to the oldest.
      */
     public void sortByReleaseYear() {
-        //TODO
+        ArrayList<Media> medias = getAllMedia();
+        for (int i = 1; i < medias.size(); i++) {
+            Media media = medias.get(i);
+            int j = i - 1;
+
+            while (j >= 0 && medias.get(j).getReleaseYear() < media.getReleaseYear()) {
+                medias.set(j + 1, medias.get(j));
+                j--;
+            }
+            medias.set(j + 1, media);
+        }
     }
     /**
      * Sorts the shows by whether the user have completed them or not.
@@ -127,10 +167,19 @@ public class MediaManager {
      * from A-Z and so will the uncompleted shows.
      */
     public void sortByCompletion() {
-        //TODO
+        ArrayList<Media> medias = getAllMedia();
+
+        for (int i = 1; i < medias.size(); i++) {
+            Media key = medias.get(i);
+            int j = i - 1;
+
+            while (j >= 0 && medias.get(j).isCompleted() && !key.isCompleted()) {
+                medias.set(j + 1, medias.get(j));
+                j--;
+            }
+            medias.set(j + 1, key);
+        }
     }
-
-
 
     public void saveToFile(String fileName) {
         ArrayList<Media> medias = getAllMedia();
