@@ -2,21 +2,21 @@ package org.compsci.ia;
 
 public class EpisodicMedia extends Media{
     protected int totalEpisodes;
-    protected int episodeDuration;
+    protected int episodeProgress;
 
     public int getTotalEpisodes() {
         return totalEpisodes;
     }
 
-    public int getEpisodeDuration() {
-        return episodeDuration;
+    public int getEpisodeProgress() {
+        return episodeProgress;
     }
 
     public void setTotalEpisodes(int totalEpisodes) {
         this.totalEpisodes = totalEpisodes;
     }
 
-    public void setEpisodeDuration(int episodeDuration) {
-        this.episodeDuration = episodeDuration;
+    public void setEpisodeProgress(int episodeProgress) {
+        this.episodeProgress = episodeProgress;
     }
 }

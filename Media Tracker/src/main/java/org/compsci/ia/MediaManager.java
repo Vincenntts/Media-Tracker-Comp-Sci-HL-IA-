@@ -45,7 +45,7 @@ public class MediaManager {
                     media.setNotes(dataArray[5]);
                     media.setCompleted(Boolean.parseBoolean(dataArray[6]));
                     ((Anime)media).setTotalEpisodes(Integer.parseInt(dataArray[7]));
-                    ((Anime)media).setEpisodeDuration(Integer.parseInt(dataArray[8]));
+                    ((Anime)media).setEpisodeProgress(Integer.parseInt(dataArray[8]));
                     ((Anime)media).setSubbed(Boolean.parseBoolean(dataArray[9]));
                     ((Anime)media).setDubbed(Boolean.parseBoolean(dataArray[10]));
                     addMedia(media);
@@ -58,7 +58,7 @@ public class MediaManager {
                     media.setNotes(dataArray[5]);
                     media.setCompleted(Boolean.parseBoolean(dataArray[6]));
                     ((Cartoon)media).setTotalEpisodes(Integer.parseInt(dataArray[7]));
-                    ((Cartoon)media).setEpisodeDuration(Integer.parseInt(dataArray[8]));
+                    ((Cartoon)media).setEpisodeProgress(Integer.parseInt(dataArray[8]));
                     ((Cartoon)media).setAgeRating(dataArray[9]);
                     addMedia(media);
                 } else if (dataArray[0].equalsIgnoreCase("MOVIE")) {
@@ -80,7 +80,7 @@ public class MediaManager {
                     media.setNotes(dataArray[5]);
                     media.setCompleted(Boolean.parseBoolean(dataArray[6]));
                     ((Show)media).setTotalEpisodes(Integer.parseInt(dataArray[7]));
-                    ((Show)media).setEpisodeDuration(Integer.parseInt(dataArray[8]));
+                    ((Show)media).setEpisodeProgress(Integer.parseInt(dataArray[8]));
                     ((Show)media).setSeasons(Integer.parseInt(dataArray[9]));
                     addMedia(media);
                 } else {

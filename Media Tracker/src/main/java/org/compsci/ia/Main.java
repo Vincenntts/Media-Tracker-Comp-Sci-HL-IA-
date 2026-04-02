@@ -63,16 +63,16 @@ public class Main {
         sortingMenuPanel.add(sortingMenu);
         //TODO make the sorting menu actually do something
 
-        // TODO add showing the shows
         JPanel mediasPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         ArrayList<Media> medias = manager.getAllMedia();
         for (Media media : medias) {
             JPanel mediaPanel = new JPanel();
             mediaPanel.setLayout(new BoxLayout(mediaPanel, BoxLayout.Y_AXIS));
             mediaPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            mediaPanel.setPreferredSize(new Dimension(250,200));
+            mediaPanel.setPreferredSize(new Dimension(250,400));
 
             JLabel title = new JLabel(media.getTitle());
+            title.setForeground(darkAzure);
             title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             JLabel releaseYear = new JLabel("Release Year: " + String.valueOf(media.getReleaseYear()));
@@ -98,9 +98,16 @@ public class Main {
 
             JPanel buttonPanel = new JPanel();
             JButton edit = new JButton("Edit");
+            edit.setForeground(darkAzure);
+            edit.setBackground(Color.white);
+            edit.setFocusPainted(false);
             JButton delete = new JButton("Delete");
+            delete.setForeground(darkAzure);
+            delete.setBackground(Color.white);
+            delete.setFocusPainted(false);
             buttonPanel.add(edit);
             buttonPanel.add(delete);
+            //TODO make the edit and delete buttons do something
 
             mediaPanel.add(title);
             mediaPanel.add(Box.createVerticalStrut(5));
@@ -112,6 +119,13 @@ public class Main {
             mediaPanel.add(Box.createVerticalStrut(5));
             mediaPanel.add(completion);
             mediaPanel.add(Box.createVerticalStrut(5));
+            if (media.getClass().equals(Anime.class)) {
+                JLabel episode = new JLabel("Episodes: " + ((Anime) media).getEpisodeProgress() + "/" + ((Anime) media).getTotalEpisodes() );
+                episode.setAlignmentX(Component.CENTER_ALIGNMENT);
+                mediaPanel.add(episode);
+                mediaPanel.add(Box.createVerticalStrut(5));
+                
+            }
             mediaPanel.add(scrollNotes);
             mediaPanel.add(Box.createVerticalStrut(5));
             mediaPanel.add(buttonPanel);
