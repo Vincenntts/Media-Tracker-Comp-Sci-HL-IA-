@@ -3,6 +3,9 @@ package org.compsci.ia;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
         Library library = new Library();
         MediaManager manager = new MediaManager(library);
-        manager.loadFromFile();
+        manager.loadFromFile("mediaTrackerData.txt");
 
         JFrame frame = new JFrame("Media Tracker");
         frame.setSize(1000,750);
@@ -351,10 +354,10 @@ public class Main {
                         }
                     }
                     manager.addMedia(media);
-                    manager.saveToFile();
+                    manager.saveToFile("mediaTrackerData.txt");
                     addFrame.dispose();
 
-                    refresh(mediasPanel, manager, darkAzure);
+                    refresh(mediasPanel, medias, darkAzure);
 
                     JDialog successDialog = new JDialog(frame, "Success!", true);
                     successDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -377,13 +380,24 @@ public class Main {
         });
 
         searchButton.addActionListener(e -> {
-            //TODO add the search function when the search is pressed
+            String searchText = searchBar.getText().trim();
+
+            if (!searchText.isEmpty()) {
+                ArrayList<Media> filteredList = new ArrayList<>();
+                for (Media media : medias) {
+                    if (media.getTitle().toLowerCase().contains(searchText.toLowerCase())) {
+                        filteredList.add(media);
+                    }
+                }
+                refresh(mediasPanel, filteredList, darkAzure);
+            } else {
+                refresh(mediasPanel, manager.getAllMedia(), darkAzure);
+            }
         });
 
     }
-    public static void refresh(JPanel mediasPanel, MediaManager manager, Color darkAzure) {
+    public static void refresh(JPanel mediasPanel, ArrayList<Media> medias, Color darkAzure) {
         mediasPanel.removeAll();
-        ArrayList<Media> medias = manager.getAllMedia();
         for (Media media : medias) {
             JPanel mediaPanel = new JPanel();
             mediaPanel.setLayout(new BoxLayout(mediaPanel, BoxLayout.Y_AXIS));

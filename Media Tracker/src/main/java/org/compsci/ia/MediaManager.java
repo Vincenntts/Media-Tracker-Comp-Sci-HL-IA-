@@ -32,8 +32,8 @@ public class MediaManager {
      * This loads the data from the data file. It assumes that none of the comments nor
      * the names include the "|" symbol.
      */
-    public void loadFromFile() {
-        File data = new File("mediaTrackerData.txt");
+    public void loadFromFile(String fileName) {
+        File data = new File(fileName);
         try (Scanner in = new Scanner(data)) {
             while (in.hasNextLine()) {
                 String[] dataArray = in.nextLine().split("\\|");
@@ -132,9 +132,9 @@ public class MediaManager {
 
 
 
-    public void saveToFile() {
+    public void saveToFile(String fileName) {
         ArrayList<Media> medias = getAllMedia();
-        File data = new File("mediaTrackerData.txt");
+        File data = new File(fileName);
         try (PrintWriter out = new PrintWriter(data)) {
             for (Media media : medias) {
                 out.println(media.toString());
