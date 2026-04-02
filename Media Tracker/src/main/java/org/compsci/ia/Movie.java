@@ -7,7 +7,13 @@ public class Movie extends Media {
         return durationMinutes;
     }
     public void setDurationMinutes(int durationMinutes) {
-        this.durationMinutes = durationMinutes;
+        if (durationMinutes >= 0) {
+            // Allowing it to be zero for when total duration is unknown.
+            this.durationMinutes = durationMinutes;
+        } else {
+            throw new IllegalArgumentException("Total duration cannot be negative.");
+        }
+
     }
 
     @Override

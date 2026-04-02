@@ -7,7 +7,12 @@ public class Show extends EpisodicMedia {
         return seasons;
     }
     public void setSeasons(int seasons) {
-        this.seasons = seasons;
+        if (seasons >= 0) {
+            // Allowing it to be zero for unknowns.
+            this.seasons = seasons;
+        } else {
+            throw new IllegalArgumentException("Seasons cannot be negative.");
+        }
     }
 
     @Override

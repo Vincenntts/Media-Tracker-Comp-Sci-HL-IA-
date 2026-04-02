@@ -13,11 +13,21 @@ public class EpisodicMedia extends Media{
     }
 
     public void setTotalEpisodes(int totalEpisodes) {
-        this.totalEpisodes = totalEpisodes;
+        if (totalEpisodes >= 0) {
+            // Allowing it to be zero for when it's not entered or unknown.
+            this.totalEpisodes = totalEpisodes;
+        } else {
+            throw new IllegalArgumentException("Total episodes can't be negative");
+        }
     }
 
     public void setEpisodeProgress(int episodeProgress) {
-        this.episodeProgress = episodeProgress;
+        if (episodeProgress >= 0) {
+            // Allowing it to be zero for when it's not entered or unknown.
+            this.episodeProgress = episodeProgress;
+        } else {
+            throw new IllegalArgumentException("Episode progress can't be negative");
+        }
     }
 
     @Override
