@@ -10,7 +10,7 @@ public class MediaTester {
     void testToStrings() {
         Library library = new Library();
         MediaManager manager = new MediaManager(library);
-        manager.loadFromFile();
+        manager.loadFromFile("mediaTrackerData.txt");
         ArrayList<Media> medias = library.getMedias();
         for (Media media : medias) {
             System.out.println(media.toString());

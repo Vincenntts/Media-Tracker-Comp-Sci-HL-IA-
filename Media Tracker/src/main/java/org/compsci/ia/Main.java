@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("Starting program...");
         Library library = new Library();
         MediaManager manager = new MediaManager(library);
         manager.loadFromFile("mediaTrackerData.txt");
@@ -370,6 +371,7 @@ public class Main {
                 if (result == JOptionPane.YES_OPTION) {
                     manager.removeMedia(media);
                     refresh(mediasPanel, medias, manager, darkAzure, frame);
+                    manager.saveToFile("mediaTrackerData.txt");
                     JOptionPane.showMessageDialog(frame, "Successfully removed media!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(frame, "No media was removed.", "Cancelled", JOptionPane.INFORMATION_MESSAGE);
@@ -680,10 +682,10 @@ public class Main {
             }
         });
 
-
+        System.out.println("Program Finished!");
 
     }
-    public static void refresh(JPanel mediasPanel, ArrayList<Media> medias, MediaManager manager, Color darkAzure, JFrame frame) {
+    private static void refresh(JPanel mediasPanel, ArrayList<Media> medias, MediaManager manager, Color darkAzure, JFrame frame) {
         mediasPanel.removeAll();
         for (Media media : medias) {
             JPanel mediaPanel = new JPanel();
@@ -986,6 +988,7 @@ public class Main {
                 if (result == JOptionPane.YES_OPTION) {
                     manager.removeMedia(media);
                     refresh(mediasPanel, medias, manager, darkAzure, frame);
+                    manager.saveToFile("mediaTrackerData.txt");
                     JOptionPane.showMessageDialog(frame, "Successfully removed media!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(frame, "No media was removed.", "Cancelled", JOptionPane.INFORMATION_MESSAGE);

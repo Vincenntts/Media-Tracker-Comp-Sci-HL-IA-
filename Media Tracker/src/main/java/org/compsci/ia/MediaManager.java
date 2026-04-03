@@ -35,7 +35,7 @@ public class MediaManager {
     public void loadFromFile(String fileName) {
         File data = new File(fileName);
         try (Scanner in = new Scanner(data)) {
-            while (in.hasNextLine()) {
+             while (in.hasNextLine()) {
                 String[] dataArray = in.nextLine().split("\\|");
                 if (dataArray[0].equalsIgnoreCase("ANIME")) {
                     Media media = new Anime();
@@ -91,7 +91,6 @@ public class MediaManager {
         } catch (FileNotFoundException | IllegalArgumentException e) {
            System.exit(0);
         }
-
     }
 
     /**

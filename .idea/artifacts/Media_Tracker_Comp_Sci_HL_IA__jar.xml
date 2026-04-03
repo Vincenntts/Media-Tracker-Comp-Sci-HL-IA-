@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Media-Tracker-Comp-Sci-HL-IA-:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Media_Tracker_Comp_Sci_HL_IA__jar</output-path>
+    <root id="archive" name="Media-Tracker-Comp-Sci-HL-IA-.jar">
+      <element id="module-output" name="Media-Tracker-Comp-Sci-HL-IA-" />
+    </root>
+  </artifact>
+</component>
